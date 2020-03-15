@@ -1,49 +1,45 @@
 <?php
-//var_dump($_POST);
-//最初に変数を定義しておかないとエラーになる
+
+//各曜日このコードになってます
+
 $err_msg1 = "";
 $err_msg2 = "";
 $err_msg3 = "";
 $err_msg4 = "";
-$err_msg5 = "";
-$message = "";
-$sub_name = ( isset( $_POST["sub_name"] ) === true ) ?$_POST["sub_name"]: "";
-$tea_name  = ( isset( $_POST["tea_name"] )  === true ) ?  trim($_POST["tea_name"]) : "";
-$degree = ( isset( $_POST["degree"]) === true ) ? trim($_POST["degree"]) : "";
-$test = ( isset( $_POST["test"]) === true ) ? trim($_POST["test"]) : "";
-$report = ( isset($_POST["report"]) === true ) ? trim($_POST["report"]) : "";
+$message ="";
+$class_name = ( isset( $_POST["class_name"] ) === true ) ?$_POST["class_name"]: "";
+$timetable = ( isset( $_POST["timetable"] ) == true ) ?$_POST["timetable"]: "";
+$teacher_name = ( isset( $_POST["teacher_name"] ) == true ) ?$_POST["teacher_name"]: "";
+$comment  = ( isset( $_POST["comment"] )  === true ) ?  trim($_POST["comment"])  : "";
  
-//投稿がある場合のみ処理を行う
+
 if (  isset($_POST["send"] ) ===  true ) {
-    if ( $sub_name   === "" ) $err_msg1 = "授業の名前を入力してください"; 
+    if ( $class_name   === "" ) $err_msg1 = "授業の名前を入力してください"; 
+
+    if ( $timetable === "" ) $err_msg2 = "何時間目か入力してください";
+
+    if ( $teacher_name === "" ) $err_msg3 = "先生の名前を入力してください";
  
-    if ( $tea_name  === "" )  $err_msg2 = "教員の名前を入力してください";
-
-    if ( $degree === "" ) $err_msg3 = "楽単度合いを入力してください";
-
-    if ( $test === "" ) $err_msg4 = "テストがあるか入力してください";
-
-    if ( $report === "" ) $err_msg5 = "レポートがあるか入力してください";
+    if ( $comment  === "" )  $err_msg4 = "コメントを入力してください";
  
-    if( $err_msg1 === "" && $err_msg2 === "" && $err_msg3 === "" && $err_msg4 === "" && $err_msg5 = "" ){
-        $fp = fopen( "data.txt" ,"a" );
-        fwrite( $fp ,  $sub_name."\t".$tea_name."\t".$degree."\t".$test."\t".$report."\n" );
-        $message ="書き込みに成功しました。";
+    if( $err_msg1 === "" && $err_msg2 === "" && $err_msg3 === "" && $err_msg4 === "" ){
+        $fp = fopen( "mon_data.txt" ,"a" );
+        fwrite( $fp ,  $class_name."\t".$timetable."\t".$teacher_name."\t".$comment."\n");
+        $message = "書き込みに成功しました。";
     }
  
 }
  
-$fp = fopen("data.txt","r");
+$fp = fopen("mon_data.txt","r");
  
-$dataArr= array();
+$dataArr = array();
 while( $res = fgets( $fp)){
     $tmp = explode("\t",$res);
     $arr = array(
-        "sub_name"=>$tmp[0],
-        "tea_name"=>$tmp[1],
-        "degree"=>$tmp[2],
-        "test"=>$tmp[3],
-        "report"=>$tmp[4]
+        "class_name"=>$tmp[0],
+        "timetable"=>$tmp[1],
+        "teacher_name"=>$tmp[2],
+        "comment"=>$tmp[3]
     );
     $dataArr[]= $arr;
 } 
@@ -54,32 +50,31 @@ while( $res = fgets( $fp)){
 <html lang="ja">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>石池｜Ishiike</title>
+        <title>石池　月曜日</title>
     </head>
     <body>
+        <header>
+            <p>月曜日</p>
+        </header>
         <?php echo $message; ?>
         <form method="post" action="">
-        授業名：<input type="text" name="sub_name" value="<?php echo $sub_name; ?>" >
+        授業名：<input type="text" name="class_name" value="<?php echo $class_name; ?>" >
             <?php echo $err_msg1; ?><br>
-            教員名：<textarea  name="tea_name" rows="1" cols="40"><?php echo $tea_name; ?></textarea>
+        時間：<input type="text" name="timetable" value="<?php echo $timetable; ?>" >
             <?php echo $err_msg2; ?><br>
-            楽単度：<textarea name="degree" rows="1" cols="40"><?php echo $degree; ?></textarea>
+        先生の名前：<input type="text" name="teacher_name" value="<?php echo $teacher_name; ?>" >
             <?php echo $err_msg3; ?><br>
-            テストの有無：<textarea name="test" rows="1" cols="40"><?php echo $test; ?></textarea>
+        コメント(※改行するとバグが発生する報告があります)：<textarea  name="comment" rows="4" cols="40"><?php echo $comment; ?></textarea>
             <?php echo $err_msg4; ?><br>
-            レポートの有無：<textarea name="report" rows="1" cols="40"><?php echo $report; ?></textarea>
-            <?php echo $err_msg5; ?><br>
 <br>
-          <input type="submit" name="send" value="投稿" >
+          <input type="submit" name="send" value="クリック" >
         </form>
         <dl>
          <?php foreach( $dataArr as $data ):?>
-         <p><span><?php echo $data["sub_name"]; ?></span>:
-         <span><?php echo $data["tea_name"]; ?></span>:
-         <span><?php echo $data["degree"]; ?></span>:
-         <span><?php echo $data["test"]; ?></span>:
-         <span><?php echo $data["report"]; ?></span></p>
+         <p><span><?php echo $data["class_name"]; ?></span> : <span><?php echo $data["timetable"]; ?></span> : <span><?php echo $data["teacher_name"]; ?></span> : <span><?php echo $data["comment"]; ?></span></p>
         <?php endforeach;?>
 </dl>
+<br>
+        <a href="http://tmu-minamiosawa.sakura.ne.jp/ishiike/home.html">ホーム</a>
     </body>
 </html>
