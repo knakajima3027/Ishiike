@@ -1,6 +1,6 @@
 <?php
 
-//各曜日このコードになってます
+//すべての曜日がこのコードになってます
 
 $err_msg1 = "";
 $err_msg2 = "";
@@ -11,7 +11,7 @@ $class_name = ( isset( $_POST["class_name"] ) === true ) ?$_POST["class_name"]: 
 $timetable = ( isset( $_POST["timetable"] ) == true ) ?$_POST["timetable"]: "";
 $teacher_name = ( isset( $_POST["teacher_name"] ) == true ) ?$_POST["teacher_name"]: "";
 $comment  = ( isset( $_POST["comment"] )  === true ) ?  trim($_POST["comment"])  : "";
- 
+
 
 if (  isset($_POST["send"] ) ===  true ) {
     if ( $class_name   === "" ) $err_msg1 = "授業の名前を入力してください"; 
@@ -50,11 +50,12 @@ while( $res = fgets( $fp)){
 <html lang="ja">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>石池　月曜日</title>
+        <link rel="stylesheet" href="mon.css">
+        <title>投稿フォーム</title>
     </head>
     <body>
         <header>
-            <p>月曜日</p>
+            <h1>月曜日</h1>
         </header>
         <?php echo $message; ?>
         <form method="post" action="">
@@ -65,13 +66,14 @@ while( $res = fgets( $fp)){
         先生の名前：<input type="text" name="teacher_name" value="<?php echo $teacher_name; ?>" >
             <?php echo $err_msg3; ?><br>
         コメント(※改行するとバグが発生する報告があります)：<textarea  name="comment" rows="4" cols="40"><?php echo $comment; ?></textarea>
-            <?php echo $err_msg4; ?><br>
+            <?php echo $err_msg2; ?><br>
 <br>
           <input type="submit" name="send" value="クリック" >
         </form>
         <dl>
          <?php foreach( $dataArr as $data ):?>
-         <p><span><?php echo $data["class_name"]; ?></span> : <span><?php echo $data["timetable"]; ?></span> : <span><?php echo $data["teacher_name"]; ?></span> : <span><?php echo $data["comment"]; ?></span></p>
+         <p>★<span><?php echo $data["class_name"]; ?></span> : <span><?php echo $data["timetable"]; ?></span> : <span><?php echo $data["teacher_name"]; ?></span><br>
+         <span><?php echo $data["comment"]; ?></span></p>
         <?php endforeach;?>
 </dl>
 <br>
