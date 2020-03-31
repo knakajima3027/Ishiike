@@ -51,11 +51,12 @@ while( $res = fgets( $fp)){
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="mon.css">
-        <title>投稿フォーム</title>
+        <title>石池｜Ishiike 月曜日</title>
+        <link rel="icon" href="ishiike_icon.jpg" type="image/png">
     </head>
     <body>
         <header>
-            <h1>月曜日</h1>
+            <h1><img src="ishiike_icon.jpg" width="30px" height="30px"> 石池｜Ishiike 【月曜日】</h1>
         </header>
         <?php echo $message; ?>
         <form method="post" action="">
